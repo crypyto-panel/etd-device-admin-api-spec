@@ -4,25 +4,216 @@ info:
   title: ETD Local Admin
   description: This is the API Spec for ETD Local Admin. We use this api to manage the connection between Local Web UI and Geth client
 servers:
-  - url: 'https://petstore.swagger.io/v1'
+  - url: "https://petstore.swagger.io/v1"
 paths:
-    /coinbase:
-        description: Set or Get Coinbase for current device
-        get:
-            description: Get current coinbase
-            responses:
-                200:
-                    description: Success Response
-                    content:
-                        application/json:
-                            schema:
-                                type: string
-                                example: 0x221770bCF48cDc134a673345088eB762213B71Dc
-                                description: User's coinbase. null if not exist
-        post:
-            description: Set user coinbase
-            responses:
-                201:
-                  description: Success Response
+  /coinbase:
+    description: Set or Get Coinbase for current device
+    get:
+      description: Get current coinbase
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  coinbase:
+                    type: string
+                    example: "0x221770bCF48cDc134a673345088eB762213B71Dc"
+    post:
+      description: Set user coinbase
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                coinbase:
+                  type: string
+                  example: "0x221770bCF48cDc134a673345088eB762213B71Dc"
+      responses:
+        201:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  coinbase:
+                    type: string
+                    example: "0x221770bCF48cDc134a673345088eB762213B71Dc"
+                  time:
+                    type: string
+                    example: "2021-07-09T02:27:11+08:00"
+                    description: Format in Moment JS
 
- 
+        500:
+          description: "Cannot Set Etherbase"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Your coinbase is not in correct format"
+                  time:
+                    type: string
+                    example: "2021-07-09T02:27:11+08:00"
+                    description: Format in Moment JS
+  /miner/start:
+    description: Start Mining
+    post:
+      description: Start mining process
+      responses:
+        201:
+          description: Success response
+        500:
+          description: "Cannot Start mining"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "You didn't set your coinbase"
+                  time:
+                    type: string
+                    example: "2021-07-09T02:27:11+08:00"
+                    description: Format in Moment JS
+  /miner/stop:
+    description: Stop Mining
+    post:
+      description: Stop mining process
+      responses:
+        201:
+          description: Success response
+        500:
+          description: "Cannot Stop mining"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "You didn't set your coinbase"
+                  time:
+                    type: string
+                    example: "2021-07-09T02:27:11+08:00"
+                    description: Format in Moment JS
+  /balance:
+    description: Get the balance for the current device
+    get:
+      description: Get the balance
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  time:
+                    type: string
+                    example: "2021-07-09T02:27:11+08:00"
+                    description: Format in Moment JS
+
+                  balance:
+                    type: number
+                    example: 60
+                    description: Balance
+
+                  unit:
+                    type: string
+                    example: etd
+                    description: Unit for the balance
+  /status/geth:
+    description: Get status of the current geth server.
+    get:
+      description: This will include all the info from geth clients.
+        For example, peerCount, isMining, blockNumber,
+        hash rate , local address ,and latest block id.
+
+      summary: Get Geth info
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    infoName:
+                      type: string
+                      description: Name of the info
+                      example: Peer Count
+                    infoValue:
+                      type: string
+                      description: Value of the info
+                      example: "10"
+        500:
+          description: Unable to fetch geth info
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: We cannot connect to the Geth client. Make sure you start your Geth correctly.
+                  time:
+                    type: string
+                    example: "2021-07-09T02:27:11+08:00"
+                    description: Format in Moment JS
+
+  /status/system:
+    description: Get system status
+    get:
+      summary: Get system info
+      description: Get system info.
+        Including CPU usage, memory usage, hard drive usage,
+        system time, docker image version, docker container status,
+        and auto-update script status.
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    infoName:
+                      type: string
+                      description: Name of the info
+                      example: CPU Usage
+                    infoValue:
+                      type: string
+                      description: Value of the info
+                      example: "10%"
+  /logs:
+    description: Get system logs
+    get:
+      summary: Get system logs
+      description: Get system logs. For example, auto-update log, runner log, and docker logs.
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    logName:
+                      type: string
+                      description: Log File Name
+                      example: Auto update.log
+                    logValue:
+                      type: string
+                      description: Log File Content
+                      example: "[2021-01-01] Check update"
