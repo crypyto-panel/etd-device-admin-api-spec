@@ -1,7 +1,8 @@
 openapi: 3.0.0
 info:
   version: 1.0.0
-  title: Geth Local
+  title: ETD Local Admin
+  description: This is the API Spec for ETD Local Admin. We use this api to manage the connection between Local Web UI and Geth client
 servers:
   - url: 'https://petstore.swagger.io/v1'
 paths:
@@ -16,7 +17,12 @@ paths:
                         application/json:
                             schema:
                                 type: string
-                                example: 0xabcdefg
-                                description: User's coinbase
+                                example: 0x221770bCF48cDc134a673345088eB762213B71Dc
+                                description: User's coinbase. null if not exist
+        post:
+            description: Set user coinbase
+            responses:
+                201:
+                  description: Success Response
 
  
