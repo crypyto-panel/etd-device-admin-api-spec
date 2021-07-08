@@ -16,6 +16,7 @@ paths:
                         application/json:
                             schema:
                                 type: string
-                                
+                                example: 0xabcdefg
+                                description: User's coinbase
 
  
