@@ -1,1 +1,21 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Geth Local
+servers:
+  - url: 'https://petstore.swagger.io/v1'
+paths:
+    /coinbase:
+        description: Set or Get Coinbase for current device
+        get:
+            description: Get current coinbase
+            responses:
+                200:
+                    description: Success Response
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                                
 
+ 
