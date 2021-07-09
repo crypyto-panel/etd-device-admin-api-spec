@@ -107,7 +107,8 @@ paths:
   /balance:
     description: Get the balance for the current device
     get:
-      description: Get the balance
+      summary: Get the balance
+      description: Get the current coinbase's balance
       responses:
         200:
           description: Success response
