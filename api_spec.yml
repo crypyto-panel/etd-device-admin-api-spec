@@ -136,7 +136,7 @@ paths:
     get:
       description: This will include all the info from geth clients.
         For example, peerCount, isMining, blockNumber,
-        hash rate , local address ,and latest block id.
+        hash rate , local address, Geth Version, and latest block id.
 
       summary: Get Geth info
       responses:
@@ -218,3 +218,78 @@ paths:
                       type: string
                       description: Log File Content
                       example: "[2021-01-01] Check update"
+  /peers/add:
+    description: Add peer
+    post:
+      summary: Add peer
+      description: Add new peer by providing peer url
+      responses:
+        201:
+          description: Success response
+        500:
+          description: "Cannot Set Etherbase"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Your coinbase is not in correct format"
+                  time:
+                    type: string
+                    example: "2021-07-09T02:27:11+08:00"
+                    description: Format in Moment JS
+
+  /peers:
+    description: Peers' info
+    get:
+      summary: Get connected peers' info
+      description: Will return all the connected peers
+      responses:
+        201:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    caps:
+                      type: array
+                      items:
+                        type: string
+                        example: "etd/61"
+                    id:
+                      type: string
+                      example: "3f8f61999252251808972871bc810505d5b33f7de761c98810584279dce9ecabb0b7da0836978e6074f48e2b787048739c9dc1f734403c8adafc0716d16f4dcd"
+                    name:
+                      type: string
+                      description: Geth client version
+                      example: Geth/v1.3.5-34b622a2/linux/go1.6
+                    network:
+                      type: object
+                      description: Network infomation for the connnected client
+                      properties:
+                        localAddress:
+                          type: string
+                          example: 192.168.0.105:49356
+                        remoteAddress:
+                          type: string
+                          example: 73.217.192.86:30303
+                    protocols:
+                      type: object
+                      properties:
+                        etd:
+                          type: object
+                          properties:
+                            difficulty:
+                              type: number
+                              description: Hash difficulty
+                              example: 10197633442299193000
+                            head:
+                              type: string
+                              example: "8f2c1a08cfc80eff8e2aa601254d6f094e0e801b2e4f0bf2aefffaead93daa41"
+                            version:
+                              type: number
+                              example: 63
